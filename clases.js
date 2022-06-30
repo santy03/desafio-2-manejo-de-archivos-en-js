@@ -35,7 +35,7 @@ class Contenedor{
 	async getById(id) {
         try {
             const products = await fs.promises.readFile(this.product, 'utf-8');
-            const allProducts =  JSON.parse(data);
+            const allProducts =  JSON.parse(product);
             const res = allProducts.find(element => element.id == id);
             console.log(res);
         } catch(err) {
@@ -43,9 +43,16 @@ class Contenedor{
         }
     }
 
-	getAll() {
+	async getAll() {
+        try {
+            const products = await fs.promises.readFile(this.product, 'utf-8');
+            const allProducts = JSON.parse(product);
+            console.log(allProducts);
+        } catch(err) {
+            console.log(err.message);
+        }
+    }
 
-	}
 
 	deleteById() {
 
