@@ -8,7 +8,7 @@ class Contenedor{
 	async firstProduct(product) {
 		try {
 			product.id = 1;
-			await fs.promises.writeFile(this.archivo, JSON.stringify([product]));
+			await fs.promises.writeFile(this.product, JSON.stringify([product]));
 		}catch(err){
 			console.log(err.message);
 		}
@@ -17,25 +17,31 @@ class Contenedor{
 	async save(producto) {
 		try {
 
-			const products = await fs.readFile(this.archivo,"utf-8");
+			const products = await fs.readFile(this.product,"utf-8");
 			const previousInfo = JSON.parse(products);
 
 			//Obtener id
-			let newId = previousInfo[previousInfo.lenght - 1].id + 1;
-			producto.id = newId;
+			producto.id = productos.lenght + 1;
 
 			//Escribir datos
 			let newArray = [previousInfo, producto];
-			await fs.promises.writeFile(this.archivo, JSON.stringify(newArray));
+			await fs.promises.writeFile(this.product, JSON.stringify(newArray));
 		}  catch(err) {
 			console.log("No se creo ningun producto", err.message);
 			this.firstProduct(producto);
 		}
 	}
 
-	getById() {
-
-	}
+	async getById(id) {
+        try {
+            const products = await fs.promises.readFile(this.product, 'utf-8');
+            const allProducts =  JSON.parse(data);
+            const res = allProducts.find(element => element.id == id);
+            console.log(res);
+        } catch(err) {
+            console.log(err.message);
+        }
+    }
 
 	getAll() {
 
@@ -52,7 +58,13 @@ class Contenedor{
 
 
 
-let newProduct = new Contenedor (productos.txt);
-producto1.save({nombre:"Buzo Adidas negro", precio: 13999, url:"/BuzoAdidasNegro.jpg" })
-producto2.save({nombre:"Remera Puma", precio: 4499, url:"/RemeraPuma.jpg" })
-producto3.save({nombre:"Zapatillas Adidas Coreracer", precio: 9999, url:"/ZapatillasAdidasCoreracer.jpg"})
+let newProductos = new Contenedor("./productos.txt");
+//Producto 1
+newProductos.save({name:"Buzo Adidas negro", price: 13999, url:"/BuzoAdidasNegro.jpg" })
+
+//Producto 2
+newProductos.save({name:"Remera Puma", price: 4499, url:"/RemeraPuma.jpg" })
+
+//Producto 3
+newProductos.save({name:"Zapatillas Adidas Coreracer", price: 9999, url:"/ZapatillasAdidasCoreracer.jpg"})
+
