@@ -54,13 +54,25 @@ class Contenedor{
     }
 
 
-	deleteById() {
+	async deleteById(id) {
+        try {
+            const product = await fs.promises.readFile(this.product, 'utf-8');
+            const allProducts =  JSON.parse(product);
+            const res = allProducts.filter(element => element.id !== id);
 
-	}
+            await fs.promises.writeFile(this.product, JSON.stringify(res));
+        } catch(err) {
+            console.log(err.message);
+        }
+    }
 
-	deleteAll() {
-
-	}
+	async deleteAll() {
+        try {
+            await fs.promises.unlink(this.product);
+        } catch(err) {
+            console.log("Se borro el producto");
+        }
+    }
 }
 
 
@@ -75,3 +87,4 @@ newProductos.save({name:"Remera Puma", price: 4499, url:"/RemeraPuma.jpg" })
 //Producto 3
 newProductos.save({name:"Zapatillas Adidas Coreracer", price: 9999, url:"/ZapatillasAdidasCoreracer.jpg"})
 
+newProductos.deleteAll();
